@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Slope",
+    "path": "games/slope.html",
+    "image": "https://via.placeholder.com/150",
+    "description": "High-speed physics module."
+  },
+  {
+    "name": "Retro Bowl",
+    "path": "games/retro-bowl.html",
+    "image": "https://via.placeholder.com/150",
+    "description": "Team management simulation."
+  }
+]
