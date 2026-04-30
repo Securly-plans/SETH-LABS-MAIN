@@ -2,66 +2,60 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Save & Load: Reboot</title>
+    <title>Save & Load2</title>
     <style>
-        body { font-family: sans-serif; background: #f4f4f4; text-align: center; margin: 0; }
-        #game-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); 
-            gap: 20px; 
-            padding: 40px; 
-        }
-        .card { 
-            background: white; 
-            padding: 20px; 
-            border-radius: 12px; 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
-            transition: transform 0.2s;
-        }
-        .card:hover { transform: translateY(-5px); }
-        .card img { width: 100%; border-radius: 8px; height: 150px; object-fit: cover; }
-        .card h3 { margin: 15px 0 10px; }
-        .card a { 
-            display: inline-block; 
-            background: #007bff; 
-            color: white; 
-            padding: 10px 20px; 
-            border-radius: 5px; 
-            text-decoration: none; 
-        }
+        :root { --primary: #2c3e50; --accent: #3498db; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #ecf0f1; }
+        nav { background: var(--primary); padding: 1rem; color: white; display: flex; justify-content: space-between; align-items: center; }
+        #search { padding: 8px; border-radius: 4px; border: none; width: 250px; }
+        .container { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; padding: 30px; }
+        .card { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: 0.3s; }
+        .card:hover { transform: scale(1.03); }
+        .card img { width: 100%; height: 120px; object-fit: cover; }
+        .card-info { padding: 15px; text-align: center; }
+        .btn { display: block; background: var(--accent); color: white; text-decoration: none; padding: 10px; border-radius: 5px; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-    <h1>Games</h1>
-    <div id="game-grid">Please wait as it loads...</div>
+<nav>
+    <h2>Study Library</h2>
+    <input type="text" id="search" placeholder="Search resources..." onkeyup="filterGames()">
+</nav>
 
-    <script>
-        // Fetch the JSON data
-        fetch('games.json')
-            .then(response => response.json())
-            .then(data => {
-                const grid = document.getElementById('game-grid');
-                grid.innerHTML = ''; // Clear the loading text
+<div class="container" id="game-container">
+    <!-- Games will be injected here -->
+</div>
 
-                data.forEach(game => {
-                    // Create the HTML for each card
-                    const card = `
-                        <div class="card">
-                            <img src="${game.image}" alt="${game.name}">
-                            <h3>${game.name}</h3>
-                            <p>${game.description}</p>
-                            <a href="${game.path}">Launch</a>
-                        </div>
-                    `;
-                    grid.innerHTML += card;
-                });
-            })
-            .catch(err => {
-                console.error('Error loading games:', err);
-                document.getElementById('game-grid').innerText = 'Failed to load resources.';
-            });
-    </script>
+<script>
+    let gamesData = [];
+
+    async function loadGames() {
+        const response = await fetch('games.json');
+        gamesData = await response.json();
+        displayGames(gamesData);
+    }
+
+    function displayGames(list) {
+        const container = document.getElementById('game-container');
+        container.innerHTML = list.map(game => `
+            <div class="card">
+                <img src="${game.image}" alt="${game.name}">
+                <div class="card-info">
+                    <h3>${game.name}</h3>
+                    <a href="${game.path}" class="btn">Open Module</a>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function filterGames() {
+        const term = document.getElementById('search').value.toLowerCase();
+        const filtered = gamesData.filter(g => g.name.toLowerCase().includes(term));
+        displayGames(filtered);
+    }
+
+    loadGames();
+</script>
 </body>
 </html>
