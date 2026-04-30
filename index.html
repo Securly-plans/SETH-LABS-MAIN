@@ -5,20 +5,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resource Library</title>
     <style>
-        body { font-family: sans-serif; background: #f4f4f4; text-align: center; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; padding: 20px; }
-        .card { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        a { text-decoration: none; color: #007bff; font-weight: bold; }
+        body { font-family: sans-serif; background: #f4f4f4; text-align: center; margin: 0; }
+        #game-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); 
+            gap: 20px; 
+            padding: 40px; 
+        }
+        .card { 
+            background: white; 
+            padding: 20px; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+            transition: transform 0.2s;
+        }
+        .card:hover { transform: translateY(-5px); }
+        .card img { width: 100%; border-radius: 8px; height: 150px; object-fit: cover; }
+        .card h3 { margin: 15px 0 10px; }
+        .card a { 
+            display: inline-block; 
+            background: #007bff; 
+            color: white; 
+            padding: 10px 20px; 
+            border-radius: 5px; 
+            text-decoration: none; 
+        }
     </style>
 </head>
 <body>
-    <h1>Reference Materials</h1>
-    <div class="grid">
-        <div class="card">
-            <h3>Physics Engine Test</h3>
-            <a href="games/slope.html">Launch Module</a>
-        </div>
-        <!-- Add more cards here as you add games -->
-    </div>
+
+    <h1>Reference Library</h1>
+    <div id="game-grid">Loading resources...</div>
+
+    <script>
+        // Fetch the JSON data
+        fetch('games.json')
+            .then(response => response.json())
+            .then(data => {
+                const grid = document.getElementById('game-grid');
+                grid.innerHTML = ''; // Clear the loading text
+
+                data.forEach(game => {
+                    // Create the HTML for each card
+                    const card = `
+                        <div class="card">
+                            <img src="${game.image}" alt="${game.name}">
+                            <h3>${game.name}</h3>
+                            <p>${game.description}</p>
+                            <a href="${game.path}">Launch</a>
+                        </div>
+                    `;
+                    grid.innerHTML += card;
+                });
+            })
+            .catch(err => {
+                console.error('Error loading games:', err);
+                document.getElementById('game-grid').innerText = 'Failed to load resources.';
+            });
+    </script>
 </body>
 </html>
