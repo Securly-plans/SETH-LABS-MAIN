@@ -1,9 +1,9 @@
 [
   {
-    "name": "Slope",
-    "path": "games/slope.html",
+    "name": "Ragdoll Archers",
+    "path": "./games/RagdollArchers.html",
     "image": "https://via.placeholder.com/150",
-    "description": "High-speed physics module."
+    "description": "Cool Ragdoll Game."
   },
   {
     "name": "Retro Bowl",
