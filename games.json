@@ -1,7 +1,7 @@
 [
   {
     "name": "Ragdoll Archers",
-    "path": "./games/RagdollArchers.html",
+    "path": "games/RagdollArchers/index.html",
     "image": "https://via.placeholder.com/150",
     "description": "Cool Ragdoll Game."
   },
